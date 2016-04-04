@@ -42,7 +42,14 @@ calc_autostereogram:
                 beq $s6,$s3,imas #i++
                 bge $s5,$s4,false #i>=S
                 jal lfsr_random  #llamar funcion random
+                mulu $t1, $s6,$s2 #j*ancho
+                addu $t1,$t1,$s5 #le sumamos posicion i
+                addu $t1,$t1,$s0 #index del autostereogram
                 move $t4, $v0   #guardamos el valor de random en $t6
+                and $t4, $t4, 0xFF #mascara solicitada en las especificaciones
+                sb $t4, 0($t1)
+                addi $s6, $s6, 1 #i++
+                j for2
                                        
         false:
                  
@@ -55,8 +62,10 @@ calc_autostereogram:
                 lb $t3, 0($t1) #valor del puntero en depth(i,j)
                 sub $t3,$t3,$s4 #resto i con S
                 addu $t3,$t3,$s5 # i + depth(t4i,j)-S
+                addu $t3, $t3, $s0
+                lb $t4 0($t3)
                 and $t4, $t4, 0xFF #mascara solicitada en las especificaciones
-                sb $t6 0($t4)#ingresamos el indice I
+                sb $t4 0($t3)#ingresamos el indice I
                 addi $s6,$s6,1 #j++
                 j salida
         for1:
