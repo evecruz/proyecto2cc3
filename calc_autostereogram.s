@@ -39,17 +39,17 @@ calc_autostereogram:
         
         for2:
                 beq $s5,$s2,for1 #i=width
-                beq $s6,$s3,imas
+                beq $s6,$s3,imas #i++
                 bge $s5,$s4,false #i>=S
                 jal lfsr_random  #llamar funcion random
-                move $t6, $v0   #guardamos el valor de random en $t6
+                move $t4, $v0   #guardamos el valor de random en $t6
                                        
         false:
                  
                 mulu $t1, $s6,$s2 #j*ancho
                 addu $t1,$t1,$s5 #le sumamos posicion i
                 addu $t1,$t1,$s1 #index del depthMap
-                mulu $t2,$s6,$s2#j*ancho
+                mulu $t2,$s6,$s2  #j*ancho
                 addu $t2,$s5,$t2
                 addu $t2,$t2,$s0
                 lb $t3, 0($t1) #valor del puntero en depth(i,j)
@@ -58,7 +58,7 @@ calc_autostereogram:
                 and $t4, $t4, 0xFF #mascara solicitada en las especificaciones
                 sb $t6 0($t4)#ingresamos el indice I
                 addi $s6,$s6,1 #j++
-                j for2
+                j salida
         for1:
                 beq $s5,$s2,salida#sale cuando i=ancho
                 addi $s5,$s5,1 #i++
