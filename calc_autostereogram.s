@@ -41,7 +41,8 @@ calc_autostereogram:
                 beq $s5,$s2,for1 #i=width
                 beq $s6,$s3,imas #i++
                 bge $s5,$s4,false #i>=S
-                jal debug_random1  #llamar funcion random
+                beq $s5,$s3 comp
+                jal lfrs_random  #llamar funcion random
                 mulu $t1, $s6,$s2 #j*ancho
                 addu $t1,$t1,$s5 #le sumamos posicion i
                 addu $t1,$t1,$s0 #index del autostereogram
@@ -75,6 +76,11 @@ calc_autostereogram:
                 
         imas:
                 addi $s5, $s5, 1 #i++
+
+        comp:
+        beq $s6 $s4 salida
+        j for1
+
         salida:  
         lw $s0 0($sp)
         lw $s1 4($sp)
@@ -87,3 +93,4 @@ calc_autostereogram:
         #regresamos espacio de memoria
         addiu $sp $sp 28
         jr $ra
+
